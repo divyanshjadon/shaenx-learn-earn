@@ -23,42 +23,28 @@ const levelColors = {
 };
 
 export function LearningTrackCard({
-  id,
-  title,
-  description,
-  duration,
-  modules,
-  enrolled,
-  category,
-  level,
-  progress,
+  id, title, description, duration, modules,
+  enrolled, category, level, progress,
 }: LearningTrackCardProps) {
   return (
-    <div className="glass-card-hover p-6 flex flex-col h-full">
+    <div className="neon-card-hover p-6 flex flex-col h-full">
       {/* Header with gradient bar */}
-      <div className="h-2 w-full rounded-full bg-gradient-primary mb-4" />
+      <div className="h-1.5 w-full rounded-full bg-gradient-primary mb-4 shadow-glow" />
 
       {/* Badges */}
       <div className="flex items-center gap-2 mb-4">
-        <Badge
-          variant="outline"
-          className={category === "Web3" ? "badge-web3" : category === "Web2" ? "badge-web2" : "badge-reward"}
-        >
+        <Badge variant="outline" className={category === "Web3" ? "badge-web3" : category === "Web2" ? "badge-web2" : "badge-reward"}>
           {category}
         </Badge>
-        <Badge variant="outline" className={levelColors[level]}>
-          {level}
-        </Badge>
+        <Badge variant="outline" className={levelColors[level]}>{level}</Badge>
       </div>
 
       {/* Content */}
       <h3 className="font-display font-semibold text-lg mb-2">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-4 flex-grow line-clamp-2">
-        {description}
-      </p>
+      <p className="text-sm text-muted-foreground mb-4 flex-grow line-clamp-2">{description}</p>
 
       {/* Stats */}
-      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4 font-mono">
         <div className="flex items-center gap-1.5">
           <Clock className="w-4 h-4" />
           <span>{duration}</span>
@@ -78,11 +64,11 @@ export function LearningTrackCard({
         <div className="pt-4 border-t border-border/50">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Progress</span>
-            <span className="text-sm text-muted-foreground">{progress}%</span>
+            <span className="text-sm text-muted-foreground font-mono">{progress}%</span>
           </div>
           <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-primary transition-all duration-500"
+              className="h-full rounded-full bg-gradient-primary transition-all duration-500 shadow-glow"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -98,7 +84,7 @@ export function LearningTrackCard({
           <Link to={`/learn/${id}`}>
             <Button variant="outline" className="w-full gap-2 group">
               Start Learning
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </div>
