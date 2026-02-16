@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Wallet, Terminal } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navLinks = [
   { name: "Explore", href: "/explore" },
@@ -59,6 +60,7 @@ export function Header() {
 
           {/* Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <Button variant="glass" size="sm" className="gap-2 font-mono">
               <Wallet className="w-4 h-4" />
               Connect Wallet
