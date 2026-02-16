@@ -79,10 +79,10 @@ export default {
         "3xl": "calc(var(--radius) + 12px)",
       },
       boxShadow: {
-        "glass": "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
-        "glass-lg": "0 16px 48px 0 rgba(31, 38, 135, 0.1)",
-        "glow": "0 0 40px -10px hsl(187 85% 43% / 0.3)",
-        "glow-accent": "0 0 40px -10px hsl(24 95% 58% / 0.3)",
+        "glass": "0 4px 16px 0 rgba(0, 0, 0, 0.04)",
+        "glass-lg": "0 12px 32px 0 rgba(0, 0, 0, 0.06)",
+        "glow": "0 0 30px -8px hsl(150 60% 40% / 0.15)",
+        "glow-accent": "0 0 30px -8px hsl(150 60% 40% / 0.15)",
       },
       keyframes: {
         "accordion-down": {
