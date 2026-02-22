@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { WalletProvider } from "@/contexts/WalletContext";
 import Index from "./pages/Index";
 import Explore from "./pages/Explore";
 import LearnHub from "./pages/LearnHub";
@@ -25,6 +26,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <AuthProvider>
+            <WalletProvider>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/explore" element={<Explore />} />
@@ -37,6 +39,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </WalletProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>

@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Wallet, Terminal, LogOut } from "lucide-react";
+import { Menu, X, Terminal, LogOut } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { WalletButton } from "@/components/WalletButton";
 
 const navLinks = [
   { name: "Explore", href: "/explore" },
@@ -63,10 +64,7 @@ export function Header() {
           {/* Actions */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
-            <Button variant="glass" size="sm" className="gap-2 font-mono">
-              <Wallet className="w-4 h-4" />
-              Connect Wallet
-            </Button>
+            <WalletButton />
             {user ? (
               <Button variant="outline" size="sm" className="gap-2 font-mono" onClick={signOut}>
                 <LogOut className="w-4 h-4" />
@@ -116,10 +114,7 @@ export function Header() {
                   </Link>
                 ))}
                 <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border/50">
-                  <Button variant="glass" className="w-full gap-2 font-mono">
-                    <Wallet className="w-4 h-4" />
-                    Connect Wallet
-                  </Button>
+                  <WalletButton fullWidth />
                   {user ? (
                     <Button variant="outline" className="w-full gap-2 font-mono" onClick={() => { signOut(); setMobileMenuOpen(false); }}>
                       <LogOut className="w-4 h-4" />
