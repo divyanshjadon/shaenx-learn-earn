@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Wallet, Terminal } from "lucide-react";
+import { Menu, X, Wallet, Terminal, LogOut } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { name: "Explore", href: "/explore" },
@@ -15,6 +16,7 @@ const navLinks = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
@@ -65,11 +67,18 @@ export function Header() {
               <Wallet className="w-4 h-4" />
               Connect Wallet
             </Button>
-            <Link to="/dashboard">
-              <Button variant="gradient" size="sm">
-                Get Started
+            {user ? (
+              <Button variant="outline" size="sm" className="gap-2 font-mono" onClick={signOut}>
+                <LogOut className="w-4 h-4" />
+                Sign Out
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="gradient" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -111,9 +120,16 @@ export function Header() {
                     <Wallet className="w-4 h-4" />
                     Connect Wallet
                   </Button>
-                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                    <Button variant="gradient" className="w-full">Get Started</Button>
-                  </Link>
+                  {user ? (
+                    <Button variant="outline" className="w-full gap-2 font-mono" onClick={() => { signOut(); setMobileMenuOpen(false); }}>
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </Button>
+                  ) : (
+                    <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+                      <Button variant="gradient" className="w-full">Sign In</Button>
+                    </Link>
+                  )}
                 </div>
               </nav>
             </motion.div>
