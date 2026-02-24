@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getAuthErrorMessage } from "@/lib/error-utils";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,10 +24,6 @@ export default function Auth() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
-
-  useEffect(() => {
-    if (user) navigate("/dashboard");
-  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -18,8 +18,12 @@ import {
   Target,
   Clock,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Profile() {
+  const { user } = useAuth();
+  const profileDisplayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || userProfile.name;
+  const profileUsername = user?.email ? `@${user.email.split("@")[0]}` : userProfile.username;
   return (
     <div className="min-h-screen bg-gradient-hero">
       <Header />
@@ -32,7 +36,7 @@ export default function Profile() {
               {/* Avatar */}
               <div className="flex-shrink-0">
                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-primary flex items-center justify-center text-primary-foreground text-3xl md:text-4xl font-display font-bold">
-                  {userProfile.name.split(" ").map((n) => n[0]).join("")}
+                  {profileDisplayName.split(" ").map((n) => n[0]).join("")}
                 </div>
               </div>
 
@@ -41,9 +45,9 @@ export default function Profile() {
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div>
                     <h1 className="font-display text-2xl md:text-3xl font-bold mb-1">
-                      {userProfile.name}
+                      {profileDisplayName}
                     </h1>
-                    <p className="text-muted-foreground mb-3">{userProfile.username}</p>
+                    <p className="text-muted-foreground mb-3">{profileUsername}</p>
                     <p className="text-sm max-w-lg mb-4">{userProfile.bio}</p>
 
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
