@@ -168,7 +168,7 @@ export default function About() {
             <p className="text-muted-foreground mb-6">
               Join thousands of builders earning while learning.
             </p>
-            <Link to="/dashboard">
+            <Link to="/auth">
               <Button variant="gradient" size="xl" className="gap-2">
                 Get Started
                 <ArrowRight className="w-5 h-5" />
