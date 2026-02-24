@@ -13,6 +13,7 @@ import {
   DollarSign, Trophy, Target, Star, ArrowRight,
   CheckCircle, Clock, Award, Briefcase,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const activeBounties = featuredBounties.slice(0, 2);
 const inProgressTracks = learningTracks.slice(0, 2).map((track, i) => ({
@@ -31,6 +32,9 @@ const itemVariants = {
 };
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const displayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "there";
+
   return (
     <div className="min-h-screen bg-gradient-hero relative">
       <TechBackground />
@@ -47,7 +51,7 @@ export default function Dashboard() {
           >
             <div>
               <h1 className="font-display text-2xl md:text-3xl font-bold mb-1">
-                Welcome back, {userProfile.name.split(" ")[0]}! 👋
+                Welcome back, {displayName}! 👋
               </h1>
               <p className="text-muted-foreground">
                 Here's what's happening with your bounties and learning.
