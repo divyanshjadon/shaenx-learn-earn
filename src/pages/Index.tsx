@@ -237,7 +237,7 @@ export default function Index() {
               Join thousands of builders earning real money while building their skills.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/dashboard">
+              <Link to="/auth">
                 <Button size="lg" className="w-full sm:w-auto gap-2 group">
                   Get Started Free
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
