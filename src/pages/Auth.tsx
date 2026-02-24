@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getAuthErrorMessage } from "@/lib/error-utils";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -34,7 +35,7 @@ export default function Auth() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      toast({ title: "Login failed", description: getAuthErrorMessage(error), variant: "destructive" });
     } else {
       navigate("/dashboard");
     }
@@ -53,7 +54,7 @@ export default function Auth() {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+      toast({ title: "Signup failed", description: getAuthErrorMessage(error), variant: "destructive" });
     } else {
       toast({ title: "Check your email", description: "We sent you a confirmation link to verify your account." });
     }
@@ -67,7 +68,7 @@ export default function Auth() {
     });
     setLoading(false);
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: "Error", description: getAuthErrorMessage(error), variant: "destructive" });
     } else {
       toast({ title: "Email sent", description: "Check your inbox for a password reset link." });
     }
@@ -226,7 +227,7 @@ export default function Auth() {
                     });
                     setLoading(false);
                     if (error) {
-                      toast({ title: "Google sign-in failed", description: String(error), variant: "destructive" });
+                      toast({ title: "Google sign-in failed", description: getAuthErrorMessage(error), variant: "destructive" });
                     }
                   }}
                 >
