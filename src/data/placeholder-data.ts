@@ -158,19 +158,19 @@ export const userStats = {
 };
 
 export const userProfile = {
-  name: "Alex Chen",
-  username: "@alexchen",
+  name: "Shaenx Builder",
+  username: "@builder",
   avatar: "",
-  bio: "Full-stack developer passionate about Web3 and DeFi. Building the future of decentralized finance.",
-  location: "San Francisco, CA",
-  website: "https://alexchen.dev",
-  joinedDate: "January 2024",
-  skills: ["React", "TypeScript", "Solana", "Rust", "Node.js", "PostgreSQL", "GraphQL", "AWS"],
+  bio: "Product builder focused on shipping skills, solving real problems, and earning through bounties.",
+  location: "Remote",
+  website: "https://shaenx.lovable.app",
+  joinedDate: "January 2026",
+  skills: ["React", "TypeScript", "Web3", "Node.js", "UI/UX", "APIs", "SQL", "Cloud"],
   walletAddress: "7xKX...9mNp",
   socialLinks: {
-    twitter: "alexchen",
-    github: "alexchen",
-    linkedin: "alexchen",
+    twitter: "shaenx",
+    github: "shaenx",
+    linkedin: "shaenx",
   },
 };
 

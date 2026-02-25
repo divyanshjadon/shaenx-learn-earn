@@ -73,7 +73,7 @@ export function Header() {
             ) : (
               <Link to="/auth">
                 <Button variant="gradient" size="sm">
-                  Sign In
+                  Sign In / Sign Up
                 </Button>
               </Link>
             )}
@@ -122,7 +122,7 @@ export function Header() {
                     </Button>
                   ) : (
                     <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                      <Button variant="gradient" className="w-full">Sign In</Button>
+                      <Button variant="gradient" className="w-full">Sign In / Sign Up</Button>
                     </Link>
                   )}
                 </div>

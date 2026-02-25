@@ -22,8 +22,8 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function Profile() {
   const { user } = useAuth();
-  const profileDisplayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || userProfile.name;
-  const profileUsername = user?.email ? `@${user.email.split("@")[0]}` : userProfile.username;
+  const profileDisplayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "Builder";
+  const profileUsername = user?.email ? `@${user.email.split("@")[0]}` : "@builder";
   return (
     <div className="min-h-screen bg-gradient-hero">
       <Header />
