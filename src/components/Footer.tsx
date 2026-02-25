@@ -137,7 +137,7 @@ export function Footer() {
             © {new Date().getFullYear()} Shaenx. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
-            Built with ❤️ for the Web3 community
+            Built with ❤️ for the Tech community
           </p>
         </div>
       </div>
