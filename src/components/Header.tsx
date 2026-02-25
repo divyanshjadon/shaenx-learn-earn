@@ -7,10 +7,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { WalletButton } from "@/components/WalletButton";
 
-const navLinks = [
+const publicNavLinks = [
   { name: "Explore", href: "/explore" },
   { name: "Learn", href: "/learn" },
-  { name: "Dashboard", href: "/dashboard" },
   { name: "Community", href: "/about" },
 ];
 
@@ -39,7 +38,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
+            {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : [])].map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
@@ -99,7 +98,7 @@ export function Header() {
               transition={{ duration: 0.3 }}
             >
               <nav className="flex flex-col gap-2">
-                {navLinks.map((link) => (
+                {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : [])].map((link) => (
                   <Link
                     key={link.name}
                     to={link.href}

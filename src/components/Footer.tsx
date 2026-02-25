@@ -5,7 +5,7 @@ const footerLinks = {
   platform: [
     { name: "Explore Gigs", href: "/explore" },
     { name: "Learn Hub", href: "/learn" },
-    { name: "Dashboard", href: "/dashboard" },
+    { name: "Sign In / Sign Up", href: "/auth" },
     { name: "Leaderboard", href: "/explore" },
   ],
   resources: [

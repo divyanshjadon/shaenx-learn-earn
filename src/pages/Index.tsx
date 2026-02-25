@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
@@ -10,6 +10,7 @@ import { HeroTerminal } from "@/components/HeroTerminal";
 import { featuredBounties, learningTracks } from "@/data/placeholder-data";
 import { ArrowRight, Zap, BookOpen, Trophy, Users, Shield, Globe } from "lucide-react";
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 const stats = [
   { label: "Active Bounties", value: "500+" },
@@ -38,6 +39,13 @@ const item = {
 };
 
 export default function Index() {
+  const navigate = useNavigate();
+
+  const handleGetStarted = async () => {
+    await supabase.auth.signOut();
+    navigate("/auth");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-hero relative">
       <TechBackground />
@@ -237,12 +245,10 @@ export default function Index() {
               Join thousands of builders earning real money while building their skills.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/auth">
-                <Button size="lg" className="w-full sm:w-auto gap-2 group">
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+              <Button size="lg" className="w-full sm:w-auto gap-2 group" onClick={handleGetStarted}>
+                Get Started Free
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
               <Link to="/about">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   Learn More
