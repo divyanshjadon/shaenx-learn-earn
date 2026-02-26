@@ -1,12 +1,10 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StatsCard } from "@/components/StatsCard";
-import { BountyCard } from "@/components/BountyCard";
-import { LearningTrackCard } from "@/components/LearningTrackCard";
 import { TechBackground, GlowLine } from "@/components/TechBackground";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { userStats, userProfile, featuredBounties, learningTracks, recentActivity } from "@/data/placeholder-data";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -14,12 +12,8 @@ import {
   CheckCircle, Clock, Award, Briefcase,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-
-const activeBounties = featuredBounties.slice(0, 2);
-const inProgressTracks = learningTracks.slice(0, 2).map((track, i) => ({
-  ...track,
-  progress: i === 0 ? 65 : 30,
-}));
+import { useDashboardData } from "@/hooks/useDashboardData";
+import { formatDistanceToNow } from "date-fns";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,6 +27,7 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { stats, activity, badges, isLoading } = useDashboardData();
   const displayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "there";
 
   return (
@@ -75,23 +70,31 @@ export default function Dashboard() {
             animate="visible"
           >
             <motion.div variants={itemVariants}>
-              <StatsCard label="Total Earnings" value={userStats.totalEarnings} icon={<DollarSign className="w-6 h-6" />} change="+$2,450 this month" changeType="positive" />
+              {isLoading ? <Skeleton className="h-32" /> : (
+                <StatsCard label="Total Earnings" value={`$${stats.total_earnings.toLocaleString()}`} icon={<DollarSign className="w-6 h-6" />} />
+              )}
             </motion.div>
             <motion.div variants={itemVariants}>
-              <StatsCard label="Completed Bounties" value={userStats.completedBounties} icon={<Trophy className="w-6 h-6" />} change="+3 this week" changeType="positive" />
+              {isLoading ? <Skeleton className="h-32" /> : (
+                <StatsCard label="Completed Bounties" value={stats.completed_bounties} icon={<Trophy className="w-6 h-6" />} />
+              )}
             </motion.div>
             <motion.div variants={itemVariants}>
-              <StatsCard label="Active Bounties" value={userStats.activeBounties} icon={<Target className="w-6 h-6" />} />
+              {isLoading ? <Skeleton className="h-32" /> : (
+                <StatsCard label="Active Bounties" value={stats.active_bounties} icon={<Target className="w-6 h-6" />} />
+              )}
             </motion.div>
             <motion.div variants={itemVariants}>
-              <StatsCard label="Reputation" value={`${userStats.reputation}/5.0`} icon={<Star className="w-6 h-6" />} change={`Rank #${userStats.rank}`} changeType="neutral" />
+              {isLoading ? <Skeleton className="h-32" /> : (
+                <StatsCard label="Reputation" value={`${stats.reputation}/5.0`} icon={<Star className="w-6 h-6" />} change={stats.rank > 0 ? `Rank #${stats.rank}` : "Unranked"} changeType="neutral" />
+              )}
             </motion.div>
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Active Bounties */}
+              {/* Getting Started prompt for new users */}
               <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -103,14 +106,24 @@ export default function Dashboard() {
                     Active Bounties
                   </h2>
                   <Link to="/explore">
-                    <Button variant="ghost" size="sm" className="gap-1">View All<ArrowRight className="w-4 h-4" /></Button>
+                    <Button variant="ghost" size="sm" className="gap-1">Browse Bounties<ArrowRight className="w-4 h-4" /></Button>
                   </Link>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {activeBounties.map((bounty) => (
-                    <BountyCard key={bounty.id} {...bounty} />
-                  ))}
-                </div>
+                {stats.active_bounties === 0 ? (
+                  <div className="neon-card p-8 text-center">
+                    <Briefcase className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-muted-foreground mb-4">You haven't started any bounties yet.</p>
+                    <Link to="/explore">
+                      <Button variant="glass" className="gap-2">
+                        Explore Bounties <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="neon-card p-6">
+                    <p className="text-muted-foreground">You have <span className="font-bold text-foreground">{stats.active_bounties}</span> active bounties. Keep building!</p>
+                  </div>
+                )}
               </motion.section>
 
               {/* Learning Progress */}
@@ -128,11 +141,21 @@ export default function Dashboard() {
                     <Button variant="ghost" size="sm" className="gap-1">Browse Tracks<ArrowRight className="w-4 h-4" /></Button>
                   </Link>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {inProgressTracks.map((track) => (
-                    <LearningTrackCard key={track.id} {...track} />
-                  ))}
-                </div>
+                {stats.learning_hours === 0 ? (
+                  <div className="neon-card p-8 text-center">
+                    <Award className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-muted-foreground mb-4">Start a learning track to build your skills.</p>
+                    <Link to="/learn">
+                      <Button variant="glass" className="gap-2">
+                        Start Learning <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="neon-card p-6">
+                    <p className="text-muted-foreground">You've logged <span className="font-bold text-foreground">{stats.learning_hours}h</span> of learning. Keep it up!</p>
+                  </div>
+                )}
               </motion.section>
             </div>
 
@@ -146,53 +169,62 @@ export default function Dashboard() {
               {/* Badges */}
               <div className="neon-card p-6">
                 <h3 className="font-display font-semibold mb-4">Your Badges</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {userStats.badges.map((badge) => (
-                    <motion.div
-                      key={badge.name}
-                      className="neon-card p-3 text-center"
-                      whileHover={{ scale: 1.08, boxShadow: "0 0 20px hsl(187 85% 43% / 0.2)" }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <span className="text-2xl mb-1 block">{badge.icon}</span>
-                      <span className="text-xs font-medium font-mono">{badge.name}</span>
-                    </motion.div>
-                  ))}
-                </div>
+                {badges.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Complete bounties and learning tracks to earn badges.</p>
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    {badges.map((badge) => (
+                      <motion.div
+                        key={badge.id}
+                        className="neon-card p-3 text-center"
+                        whileHover={{ scale: 1.08, boxShadow: "0 0 20px hsl(187 85% 43% / 0.2)" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      >
+                        <span className="text-2xl mb-1 block">{badge.icon}</span>
+                        <span className="text-xs font-medium font-mono">{badge.name}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Recent Activity */}
               <div className="neon-card p-6">
                 <h3 className="font-display font-semibold mb-4">Recent Activity</h3>
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <motion.div
-                      key={index}
-                      className="flex items-start gap-3"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 + index * 0.1 }}
-                    >
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        activity.type === "bounty_completed" ? "bg-success/10 text-success"
-                        : activity.type === "badge_earned" ? "bg-warning/10 text-warning"
-                        : "bg-primary/10 text-primary"
-                      }`}>
-                        {activity.type === "bounty_completed" && <CheckCircle className="w-4 h-4" />}
-                        {activity.type === "learning_completed" && <Award className="w-4 h-4" />}
-                        {activity.type === "badge_earned" && <Trophy className="w-4 h-4" />}
-                        {activity.type === "bounty_started" && <Clock className="w-4 h-4" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{activity.title}</p>
-                        <p className="text-xs text-muted-foreground font-mono">{activity.date}</p>
-                      </div>
-                      {activity.reward && (
-                        <Badge variant="outline" className="badge-reward text-xs">{activity.reward}</Badge>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
+                {activity.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No activity yet. Start exploring bounties!</p>
+                ) : (
+                  <div className="space-y-4">
+                    {activity.map((item) => (
+                      <motion.div
+                        key={item.id}
+                        className="flex items-start gap-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          item.type === "bounty_completed" ? "bg-success/10 text-success"
+                          : item.type === "badge_earned" ? "bg-warning/10 text-warning"
+                          : "bg-primary/10 text-primary"
+                        }`}>
+                          {item.type === "bounty_completed" && <CheckCircle className="w-4 h-4" />}
+                          {item.type === "learning_completed" && <Award className="w-4 h-4" />}
+                          {item.type === "badge_earned" && <Trophy className="w-4 h-4" />}
+                          {item.type === "bounty_started" && <Clock className="w-4 h-4" />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{item.title}</p>
+                          <p className="text-xs text-muted-foreground font-mono">
+                            {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
+                          </p>
+                        </div>
+                        {item.reward && (
+                          <Badge variant="outline" className="badge-reward text-xs">{item.reward}</Badge>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Quick Stats */}
@@ -201,15 +233,15 @@ export default function Dashboard() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground font-mono">Verified Skills</span>
-                    <span className="font-medium">{userStats.skillsVerified}</span>
+                    <span className="font-medium">{stats.skills_verified}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground font-mono">Learning Hours</span>
-                    <span className="font-medium">{userStats.learningHours}h</span>
+                    <span className="font-medium">{stats.learning_hours}h</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground font-mono">Global Rank</span>
-                    <span className="font-medium">#{userStats.rank}</span>
+                    <span className="font-medium">{stats.rank > 0 ? `#${stats.rank}` : "—"}</span>
                   </div>
                 </div>
               </div>

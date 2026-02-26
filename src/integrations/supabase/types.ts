@@ -44,6 +44,99 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activity: {
+        Row: {
+          created_at: string
+          id: string
+          reward: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reward?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reward?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          earned_at: string
+          icon: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          earned_at?: string
+          icon: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          earned_at?: string
+          icon?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          active_bounties: number
+          completed_bounties: number
+          created_at: string
+          id: string
+          learning_hours: number
+          rank: number
+          reputation: number
+          skills_verified: number
+          total_earnings: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_bounties?: number
+          completed_bounties?: number
+          created_at?: string
+          id?: string
+          learning_hours?: number
+          rank?: number
+          reputation?: number
+          skills_verified?: number
+          total_earnings?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_bounties?: number
+          completed_bounties?: number
+          created_at?: string
+          id?: string
+          learning_hours?: number
+          rank?: number
+          reputation?: number
+          skills_verified?: number
+          total_earnings?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
