@@ -18,6 +18,9 @@ import {
   Trophy,
   Target,
   Clock,
+  Twitter,
+  Github,
+  Linkedin,
 } from "lucide-react";
 
 export default function Profile() {
@@ -68,13 +71,32 @@ export default function Profile() {
                       <>
                         <h1 className="font-display text-2xl md:text-3xl font-bold mb-1">{displayName}</h1>
                         <p className="text-muted-foreground mb-3">{username}</p>
-                        {profile?.bio && <p className="text-sm max-w-lg mb-4">{profile.bio}</p>}
                         <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1.5">
                             <Calendar className="w-4 h-4" />
                             Joined {profile?.created_at ? new Date(profile.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "Recently"}
                           </div>
                         </div>
+                        {/* Social Links */}
+                        {(profile?.twitter || profile?.github || profile?.linkedin) && (
+                          <div className="flex gap-2 mt-4">
+                            {profile.twitter && (
+                              <a href={`https://twitter.com/${profile.twitter}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-colors">
+                                <Twitter className="w-4 h-4" />
+                              </a>
+                            )}
+                            {profile.github && (
+                              <a href={`https://github.com/${profile.github}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-colors">
+                                <Github className="w-4 h-4" />
+                              </a>
+                            )}
+                            {profile.linkedin && (
+                              <a href={`https://linkedin.com/in/${profile.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-muted hover:bg-primary/10 hover:text-primary flex items-center justify-center transition-colors">
+                                <Linkedin className="w-4 h-4" />
+                              </a>
+                            )}
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
