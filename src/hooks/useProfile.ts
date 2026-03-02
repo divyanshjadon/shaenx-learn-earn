@@ -1,0 +1,54 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+
+export interface Profile {
+  id: string;
+  user_id: string;
+  display_name: string | null;
+  bio: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export function useProfile() {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const profileQuery = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data as Profile | null;
+    },
+    enabled: !!user,
+  });
+
+  const updateProfile = useMutation({
+    mutationFn: async (updates: { display_name?: string; bio?: string; avatar_url?: string }) => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .update(updates)
+        .eq("user_id", user!.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["profile", user?.id] });
+    },
+  });
+
+  return {
+    profile: profileQuery.data,
+    isLoading: profileQuery.isLoading,
+    updateProfile,
+  };
+}
