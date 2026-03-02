@@ -8,6 +8,9 @@ export interface Profile {
   display_name: string | null;
   bio: string | null;
   avatar_url: string | null;
+  twitter: string | null;
+  github: string | null;
+  linkedin: string | null;
   created_at: string;
   updated_at: string;
 }

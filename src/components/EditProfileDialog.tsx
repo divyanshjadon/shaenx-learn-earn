@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Twitter, Github, Linkedin } from "lucide-react";
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -21,12 +21,18 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
 
   useEffect(() => {
     if (profile && open) {
       setDisplayName(profile.display_name ?? "");
       setBio(profile.bio ?? "");
       setAvatarUrl(profile.avatar_url ?? "");
+      setTwitter(profile.twitter ?? "");
+      setGithub(profile.github ?? "");
+      setLinkedin(profile.linkedin ?? "");
     }
   }, [profile, open]);
 
@@ -42,6 +48,9 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
         display_name: displayName.trim() || null,
         bio: bio.trim() || null,
         avatar_url: avatarUrl.trim() || null,
+        twitter: twitter.trim() || null,
+        github: github.trim() || null,
+        linkedin: linkedin.trim() || null,
       } as any);
       toast({ title: "Profile updated", description: "Your changes have been saved." });
       onOpenChange(false);
@@ -52,7 +61,7 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display">Edit Profile</DialogTitle>
         </DialogHeader>
@@ -102,6 +111,40 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
               rows={3}
             />
             <p className="text-xs text-muted-foreground">{bio.length}/500</p>
+          </div>
+
+          {/* Social Links */}
+          <div className="space-y-3">
+            <Label className="text-sm font-semibold">Social Links</Label>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Twitter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                <Input
+                  placeholder="twitter username"
+                  value={twitter}
+                  onChange={(e) => setTwitter(e.target.value)}
+                  maxLength={100}
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Github className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                <Input
+                  placeholder="github username"
+                  value={github}
+                  onChange={(e) => setGithub(e.target.value)}
+                  maxLength={100}
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <Linkedin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                <Input
+                  placeholder="linkedin username"
+                  value={linkedin}
+                  onChange={(e) => setLinkedin(e.target.value)}
+                  maxLength={100}
+                />
+              </div>
+            </div>
           </div>
         </div>
 

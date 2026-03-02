@@ -20,7 +20,10 @@ export type Database = {
           bio: string | null
           created_at: string
           display_name: string | null
+          github: string | null
           id: string
+          linkedin: string | null
+          twitter: string | null
           updated_at: string
           user_id: string
         }
@@ -29,7 +32,10 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name?: string | null
+          github?: string | null
           id?: string
+          linkedin?: string | null
+          twitter?: string | null
           updated_at?: string
           user_id: string
         }
@@ -38,7 +44,10 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name?: string | null
+          github?: string | null
           id?: string
+          linkedin?: string | null
+          twitter?: string | null
           updated_at?: string
           user_id?: string
         }
