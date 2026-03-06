@@ -8,6 +8,16 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useProfile } from "@/hooks/useProfile";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Twitter, Github, Linkedin } from "lucide-react";
+import { z } from "zod";
+
+const profileSchema = z.object({
+  display_name: z.string().max(100).nullable(),
+  bio: z.string().max(500).nullable(),
+  avatar_url: z.string().url("Must be a valid URL").regex(/^https:\/\//, "Must start with https://").max(500).nullable(),
+  twitter: z.string().regex(/^[a-zA-Z0-9_]{1,50}$/, "Only letters, numbers, and underscores allowed").nullable(),
+  github: z.string().regex(/^[a-zA-Z0-9_-]{1,39}$/, "Only letters, numbers, hyphens, and underscores allowed").nullable(),
+  linkedin: z.string().regex(/^[a-zA-Z0-9_-]{1,100}$/, "Only letters, numbers, hyphens, and underscores allowed").nullable(),
+});
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -42,16 +52,32 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
     .join("")
     .toUpperCase();
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const handleSave = async () => {
+    const values = {
+      display_name: displayName.trim() || null,
+      bio: bio.trim() || null,
+      avatar_url: avatarUrl.trim() || null,
+      twitter: twitter.trim() || null,
+      github: github.trim() || null,
+      linkedin: linkedin.trim() || null,
+    };
+
+    const result = profileSchema.safeParse(values);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach((err) => {
+        const field = err.path[0] as string;
+        fieldErrors[field] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+    setErrors({});
+
     try {
-      await updateProfile.mutateAsync({
-        display_name: displayName.trim() || null,
-        bio: bio.trim() || null,
-        avatar_url: avatarUrl.trim() || null,
-        twitter: twitter.trim() || null,
-        github: github.trim() || null,
-        linkedin: linkedin.trim() || null,
-      } as any);
+      await updateProfile.mutateAsync(values as any);
       toast({ title: "Profile updated", description: "Your changes have been saved." });
       onOpenChange(false);
     } catch {
@@ -86,7 +112,8 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
               onChange={(e) => setAvatarUrl(e.target.value)}
               maxLength={500}
             />
-            <p className="text-xs text-muted-foreground">Paste a link to your profile picture</p>
+            <p className="text-xs text-muted-foreground">Paste a link to your profile picture (must start with https://)</p>
+            {errors.avatar_url && <p className="text-xs text-destructive">{errors.avatar_url}</p>}
           </div>
 
           <div className="space-y-2">
@@ -117,32 +144,41 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
           <div className="space-y-3">
             <Label className="text-sm font-semibold">Social Links</Label>
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Twitter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                <Input
-                  placeholder="twitter username"
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
-                  maxLength={100}
-                />
+              <div>
+                <div className="flex items-center gap-2">
+                  <Twitter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <Input
+                    placeholder="twitter username"
+                    value={twitter}
+                    onChange={(e) => setTwitter(e.target.value)}
+                    maxLength={50}
+                  />
+                </div>
+                {errors.twitter && <p className="text-xs text-destructive mt-1 ml-6">{errors.twitter}</p>}
               </div>
-              <div className="flex items-center gap-2">
-                <Github className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                <Input
-                  placeholder="github username"
-                  value={github}
-                  onChange={(e) => setGithub(e.target.value)}
-                  maxLength={100}
-                />
+              <div>
+                <div className="flex items-center gap-2">
+                  <Github className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <Input
+                    placeholder="github username"
+                    value={github}
+                    onChange={(e) => setGithub(e.target.value)}
+                    maxLength={39}
+                  />
+                </div>
+                {errors.github && <p className="text-xs text-destructive mt-1 ml-6">{errors.github}</p>}
               </div>
-              <div className="flex items-center gap-2">
-                <Linkedin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                <Input
-                  placeholder="linkedin username"
-                  value={linkedin}
-                  onChange={(e) => setLinkedin(e.target.value)}
-                  maxLength={100}
-                />
+              <div>
+                <div className="flex items-center gap-2">
+                  <Linkedin className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                  <Input
+                    placeholder="linkedin username"
+                    value={linkedin}
+                    onChange={(e) => setLinkedin(e.target.value)}
+                    maxLength={100}
+                  />
+                </div>
+                {errors.linkedin && <p className="text-xs text-destructive mt-1 ml-6">{errors.linkedin}</p>}
               </div>
             </div>
           </div>
