@@ -5,7 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { BountyCard } from "@/components/BountyCard";
 import { LearningTrackCard } from "@/components/LearningTrackCard";
-import { TechBackground, GlowLine } from "@/components/TechBackground";
+import { TechBackground } from "@/components/TechBackground";
 import { HeroTerminal } from "@/components/HeroTerminal";
 
 import { featuredBounties, learningTracks } from "@/data/placeholder-data";
@@ -107,7 +107,6 @@ export default function Index() {
         </div>
       </section>
 
-      <GlowLine />
 
       {/* Featured Bounties */}
       <section className="py-20 md:py-24">
@@ -147,7 +146,6 @@ export default function Index() {
         </div>
       </section>
 
-      <GlowLine />
 
       {/* Features */}
       <section className="py-20 md:py-24">
@@ -187,7 +185,6 @@ export default function Index() {
         </div>
       </section>
 
-      <GlowLine />
 
       {/* Learning Tracks */}
       <section className="py-20 md:py-24">
@@ -227,7 +224,7 @@ export default function Index() {
         </div>
       </section>
 
-      <GlowLine />
+      
 
       {/* CTA */}
       <section className="py-20 md:py-24">

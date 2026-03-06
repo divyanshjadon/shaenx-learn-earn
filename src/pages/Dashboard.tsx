@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { StatsCard } from "@/components/StatsCard";
-import { TechBackground, GlowLine } from "@/components/TechBackground";
+import { TechBackground } from "@/components/TechBackground";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -60,7 +60,7 @@ export default function Dashboard() {
             </Link>
           </motion.div>
 
-          <GlowLine className="mb-8" />
+          
 
           {/* Stats Grid */}
           <motion.div

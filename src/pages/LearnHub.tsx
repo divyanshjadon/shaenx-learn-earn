@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { LearningTrackCard } from "@/components/LearningTrackCard";
-import { TechBackground, GlowLine } from "@/components/TechBackground";
+import { TechBackground } from "@/components/TechBackground";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -66,7 +66,7 @@ export default function LearnHub() {
             </p>
           </motion.div>
 
-          <GlowLine className="mb-12" />
+          
 
           {/* Highlights */}
           <motion.div
