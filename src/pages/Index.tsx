@@ -7,7 +7,7 @@ import { BountyCard } from "@/components/BountyCard";
 import { LearningTrackCard } from "@/components/LearningTrackCard";
 import { TechBackground, GlowLine } from "@/components/TechBackground";
 import { HeroTerminal } from "@/components/HeroTerminal";
-import { InteractiveGlobe } from "@/components/ui/interactive-globe";
+
 import { featuredBounties, learningTracks } from "@/data/placeholder-data";
 import { ArrowRight, Zap, BookOpen, Trophy, Users, Shield, Globe } from "lucide-react";
 import { motion } from "framer-motion";
@@ -99,21 +99,10 @@ export default function Index() {
               </motion.div>
             </motion.div>
 
-            {/* Right: Globe */}
-            <motion.div
-              className="hidden lg:flex items-center justify-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              <InteractiveGlobe
-                size={500}
-                dotColor="rgba(74, 222, 128, ALPHA)"
-                arcColor="rgba(74, 222, 128, 0.4)"
-                markerColor="rgba(74, 222, 128, 1)"
-                autoRotateSpeed={0.003}
-              />
-            </motion.div>
+            {/* Right: Terminal */}
+            <div className="hidden lg:block">
+              <HeroTerminal />
+            </div>
           </div>
         </div>
       </section>
