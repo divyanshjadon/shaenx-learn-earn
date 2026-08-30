@@ -363,6 +363,13 @@ export type Database = {
             referencedRelation: "screening_tests"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "test_attempts_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "screening_tests_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       user_activity: {
@@ -460,7 +467,38 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      screening_tests_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          passing_score: number | null
+          questions: Json | null
+          skill_track_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          passing_score?: number | null
+          questions?: never
+          skill_track_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          passing_score?: number | null
+          questions?: never
+          skill_track_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screening_tests_skill_track_id_fkey"
+            columns: ["skill_track_id"]
+            isOneToOne: false
+            referencedRelation: "skill_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
