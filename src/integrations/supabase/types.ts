@@ -14,6 +14,224 @@ export type Database = {
   }
   public: {
     Tables: {
+      applications: {
+        Row: {
+          applied_at: string
+          bounty_id: string
+          id: string
+          status: string
+          submission_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          bounty_id: string
+          id?: string
+          status?: string
+          submission_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          bounty_id?: string
+          id?: string
+          status?: string
+          submission_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_bounty_id_fkey"
+            columns: ["bounty_id"]
+            isOneToOne: false
+            referencedRelation: "bounties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bounties: {
+        Row: {
+          category: string
+          company_id: string
+          created_at: string
+          deadline: string | null
+          description: string
+          id: string
+          is_featured: boolean
+          reward_amount: number
+          reward_currency: string
+          skill_tags: string[]
+          status: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          company_id: string
+          created_at?: string
+          deadline?: string | null
+          description: string
+          id?: string
+          is_featured?: boolean
+          reward_amount: number
+          reward_currency?: string
+          skill_tags?: string[]
+          status?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          company_id?: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          id?: string
+          is_featured?: boolean
+          reward_amount?: number
+          reward_currency?: string
+          skill_tags?: string[]
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bounties_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidate_skills: {
+        Row: {
+          id: string
+          skill_track_id: string
+          test_attempt_id: string | null
+          user_id: string
+          verified_at: string
+        }
+        Insert: {
+          id?: string
+          skill_track_id: string
+          test_attempt_id?: string | null
+          user_id: string
+          verified_at?: string
+        }
+        Update: {
+          id?: string
+          skill_track_id?: string
+          test_attempt_id?: string | null
+          user_id?: string
+          verified_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "candidate_skills_skill_track_id_fkey"
+            columns: ["skill_track_id"]
+            isOneToOne: false
+            referencedRelation: "skill_tracks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "candidate_skills_test_attempt_id_fkey"
+            columns: ["test_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "test_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          created_at: string
+          id: string
+          logo_url: string | null
+          name: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          name?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      lesson_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lessons: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          order_index: number
+          skill_track_id: string
+          title: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          order_index?: number
+          skill_track_id: string
+          title: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          order_index?: number
+          skill_track_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_skill_track_id_fkey"
+            columns: ["skill_track_id"]
+            isOneToOne: false
+            referencedRelation: "skill_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -52,6 +270,100 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      screening_tests: {
+        Row: {
+          created_at: string
+          id: string
+          passing_score: number
+          questions: Json
+          skill_track_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          passing_score?: number
+          questions: Json
+          skill_track_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          passing_score?: number
+          questions?: Json
+          skill_track_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screening_tests_skill_track_id_fkey"
+            columns: ["skill_track_id"]
+            isOneToOne: false
+            referencedRelation: "skill_tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      skill_tracks: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          slug: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          slug: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      test_attempts: {
+        Row: {
+          attempted_at: string
+          id: string
+          passed: boolean
+          score: number
+          test_id: string
+          user_id: string
+        }
+        Insert: {
+          attempted_at?: string
+          id?: string
+          passed: boolean
+          score: number
+          test_id: string
+          user_id: string
+        }
+        Update: {
+          attempted_at?: string
+          id?: string
+          passed?: boolean
+          score?: number
+          test_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_attempts_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "screening_tests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_activity: {
         Row: {
