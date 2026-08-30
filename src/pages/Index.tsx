@@ -14,10 +14,10 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
 const stats = [
-  { label: "Active Bounties", value: "500+" },
-  { label: "Total Paid", value: "$2.5M+" },
-  { label: "Active Learners", value: "25K+" },
-  { label: "Companies", value: "150+" },
+  { label: "Active Bounties", value: "0" },
+  { label: "Total Paid", value: "$0" },
+  { label: "Active Learners", value: "0" },
+  { label: "Companies", value: "0" },
 ];
 
 const features = [

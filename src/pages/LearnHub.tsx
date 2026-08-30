@@ -14,9 +14,9 @@ const categories = ["All", "Web2", "Web3", "Full Stack"];
 const levels = ["All Levels", "Beginner", "Intermediate", "Advanced"];
 
 const highlights = [
-  { icon: BookOpen, value: "50+", label: "Learning Tracks" },
-  { icon: Target, value: "500+", label: "Hands-on Projects" },
-  { icon: Award, value: "25K+", label: "Certificates Issued" },
+  { icon: BookOpen, value: "0", label: "Learning Tracks" },
+  { icon: Target, value: "0", label: "Hands-on Projects" },
+  { icon: Award, value: "0", label: "Certificates Issued" },
 ];
 
 const containerVariants = {
