@@ -67,7 +67,7 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
     const result = profileSchema.safeParse(values);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-      result.error.errors.forEach((err) => {
+      result.error.issues.forEach((err) => {
         const field = err.path[0] as string;
         fieldErrors[field] = err.message;
       });
