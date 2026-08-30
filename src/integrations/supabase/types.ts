@@ -463,16 +463,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_public_screening_tests: {
-        Args: never
-        Returns: {
-          created_at: string
-          id: string
-          passing_score: number
-          questions: Json
-          skill_track_id: string
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
