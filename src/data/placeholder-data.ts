@@ -142,19 +142,14 @@ export const learningTracks: LearningTrackCardProps[] = [
 ];
 
 export const userStats = {
-  totalEarnings: "$12,450",
-  completedBounties: 23,
-  activeBounties: 3,
-  reputation: 4.9,
-  rank: 42,
-  skillsVerified: 8,
-  learningHours: 156,
-  badges: [
-    { name: "Early Adopter", icon: "🌟" },
-    { name: "Bug Hunter", icon: "🐛" },
-    { name: "Top Contributor", icon: "🏆" },
-    { name: "Web3 Expert", icon: "⛓️" },
-  ],
+  totalEarnings: "$0",
+  completedBounties: 0,
+  activeBounties: 0,
+  reputation: 0,
+  rank: 0,
+  skillsVerified: 0,
+  learningHours: 0,
+  badges: [],
 };
 
 export const userProfile = {
