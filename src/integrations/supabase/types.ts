@@ -463,7 +463,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_bounty_applicant_counts: {
+        Args: never
+        Returns: {
+          applicant_count: number
+          bounty_id: string
+        }[]
+      }
+      get_platform_stats: {
+        Args: never
+        Returns: {
+          active_learners: number
+          companies: number
+          open_bounties: number
+          total_paid: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
