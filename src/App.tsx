@@ -12,6 +12,8 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 const Index = lazy(() => import("./pages/Index"));
 const Explore = lazy(() => import("./pages/Explore"));
 const LearnHub = lazy(() => import("./pages/LearnHub"));
+const TrackDetail = lazy(() => import("./pages/TrackDetail"));
+const BountyDetail = lazy(() => import("./pages/BountyDetail"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
 const About = lazy(() => import("./pages/About"));
@@ -35,6 +37,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/explore" element={<Explore />} />
               <Route path="/learn" element={<LearnHub />} />
+              <Route path="/learn/:id" element={<TrackDetail />} />
+              <Route path="/explore/:id" element={<BountyDetail />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
               <Route path="/about" element={<About />} />

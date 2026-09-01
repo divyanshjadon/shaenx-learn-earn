@@ -8,17 +8,13 @@ import { LearningTrackCard } from "@/components/LearningTrackCard";
 import { TechBackground } from "@/components/TechBackground";
 import { HeroTerminal } from "@/components/HeroTerminal";
 
-import { featuredBounties, learningTracks } from "@/data/placeholder-data";
+import { useBounties } from "@/hooks/useBounties";
+import { useSkillTracks, toTrackCard } from "@/hooks/useSkillTracks";
+import { usePlatformStats } from "@/hooks/usePlatformStats";
 import { ArrowRight, Zap, BookOpen, Trophy, Users, Shield, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
-const stats = [
-  { label: "Active Bounties", value: "0" },
-  { label: "Total Paid", value: "$0" },
-  { label: "Active Learners", value: "0" },
-  { label: "Companies", value: "0" },
-];
 
 const features = [
   { icon: Zap, title: "Earn Real Money", description: "Complete bounties and get paid in crypto or fiat. No middleman." },
@@ -137,7 +133,7 @@ export default function Index() {
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
           >
-            {featuredBounties.slice(0, 3).map((bounty) => (
+            {(bounties ?? []).slice(0, 3).map(({ card: bounty }) => (
               <motion.div key={bounty.id} variants={item}>
                 <BountyCard {...bounty} />
               </motion.div>
@@ -215,7 +211,7 @@ export default function Index() {
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
           >
-            {learningTracks.slice(0, 3).map((track) => (
+            {(tracks ?? []).map((t) => toTrackCard(t)).slice(0, 3).map((track) => (
               <motion.div key={track.id} variants={item}>
                 <LearningTrackCard {...track} />
               </motion.div>
