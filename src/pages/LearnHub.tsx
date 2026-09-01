@@ -6,18 +6,12 @@ import { TechBackground } from "@/components/TechBackground";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { learningTracks } from "@/data/placeholder-data";
+import { useSkillTracks, toTrackCard } from "@/hooks/useSkillTracks";
 import { Search, BookOpen, Target, Award } from "lucide-react";
 import { motion } from "framer-motion";
 
 const categories = ["All", "Web2", "Web3", "Full Stack"];
 const levels = ["All Levels", "Beginner", "Intermediate", "Advanced"];
-
-const highlights = [
-  { icon: BookOpen, value: "0", label: "Learning Tracks" },
-  { icon: Target, value: "0", label: "Hands-on Projects" },
-  { icon: Award, value: "0", label: "Certificates Issued" },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -34,7 +28,16 @@ export default function LearnHub() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All Levels");
 
-  const filteredTracks = learningTracks.filter((track) => {
+  const { data: tracks, isLoading } = useSkillTracks();
+  const trackCards = (tracks ?? []).map((t) => toTrackCard(t));
+
+  const highlights = [
+    { icon: BookOpen, value: String(trackCards.length), label: "Learning Tracks" },
+    { icon: Target, value: String(trackCards.reduce((n, t) => n + t.modules, 0)), label: "Lessons" },
+    { icon: Award, value: String(trackCards.length), label: "Certifications" },
+  ];
+
+  const filteredTracks = trackCards.filter((track) => {
     const matchesSearch = track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       track.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "All" || track.category === selectedCategory;
@@ -144,7 +147,9 @@ export default function LearnHub() {
           </div>
 
           {/* Tracks Grid */}
-          {filteredTracks.length > 0 ? (
+          {isLoading ? (
+            <div className="neon-card p-12 text-center text-muted-foreground font-mono">Loading tracks…</div>
+          ) : filteredTracks.length > 0 ? (
             <motion.div
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               variants={containerVariants}

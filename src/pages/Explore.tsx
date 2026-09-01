@@ -6,7 +6,7 @@ import { TechBackground } from "@/components/TechBackground";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { featuredBounties } from "@/data/placeholder-data";
+import { useBounties } from "@/hooks/useBounties";
 import { Search, Filter, SlidersHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -28,7 +28,9 @@ export default function Explore() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
 
-  const filteredBounties = featuredBounties.filter((bounty) => {
+  const { data: bounties, isLoading } = useBounties();
+
+  const filteredBounties = (bounties ?? []).map((b) => b.card).filter((bounty) => {
     const matchesSearch = bounty.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bounty.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === "All" || bounty.category === selectedCategory;
@@ -135,7 +137,9 @@ export default function Explore() {
           </div>
 
           {/* Bounty Grid */}
-          {filteredBounties.length > 0 ? (
+          {isLoading ? (
+            <div className="neon-card p-12 text-center text-muted-foreground font-mono">Loading bounties…</div>
+          ) : filteredBounties.length > 0 ? (
             <motion.div
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
               variants={containerVariants}
