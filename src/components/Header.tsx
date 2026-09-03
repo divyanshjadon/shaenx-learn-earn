@@ -38,7 +38,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
-            {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : [])].map((link) => (
+            {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }, { name: "Profile", href: "/profile" }] : [])].map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
@@ -98,7 +98,7 @@ export function Header() {
               transition={{ duration: 0.3 }}
             >
               <nav className="flex flex-col gap-2">
-                {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }] : [])].map((link) => (
+                {[...publicNavLinks, ...(user ? [{ name: "Dashboard", href: "/dashboard" }, { name: "Profile", href: "/profile" }] : [])].map((link) => (
                   <Link
                     key={link.name}
                     to={link.href}
