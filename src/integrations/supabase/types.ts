@@ -460,7 +460,32 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      bounty_applicant_counts: {
+        Row: {
+          applicant_count: number | null
+          bounty_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_bounty_id_fkey"
+            columns: ["bounty_id"]
+            isOneToOne: false
+            referencedRelation: "bounties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_stats: {
+        Row: {
+          active_learners: number | null
+          community_members: number | null
+          companies: number | null
+          lessons_completed: number | null
+          open_bounties: number | null
+          total_paid: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_bounty_applicant_counts: {
