@@ -15,12 +15,6 @@ import {
 } from "lucide-react";
 import { usePlatformStats } from "@/hooks/usePlatformStats";
 
-const team = [
-  { name: "Sarah Chen", role: "Founder & CEO", avatar: "SC" },
-  { name: "Marcus Rivera", role: "CTO", avatar: "MR" },
-  { name: "Aisha Patel", role: "Head of Community", avatar: "AP" },
-  { name: "David Kim", role: "Lead Developer", avatar: "DK" },
-];
 
 const values = [
   {
