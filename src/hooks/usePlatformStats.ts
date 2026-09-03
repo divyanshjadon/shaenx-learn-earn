@@ -6,6 +6,8 @@ export interface PlatformStats {
   total_paid: number;
   active_learners: number;
   companies: number;
+  community_members: number;
+  lessons_completed: number;
 }
 
 export function usePlatformStats() {

@@ -13,6 +13,7 @@ import {
   MessageCircle,
   Mail,
 } from "lucide-react";
+import { usePlatformStats } from "@/hooks/usePlatformStats";
 
 const team = [
   { name: "Sarah Chen", role: "Founder & CEO", avatar: "SC" },
