@@ -21,12 +21,12 @@ export function usePlatformStats() {
       if (error) throw error;
       const stats = row as unknown as PlatformStats | null;
       return {
-        open_bounties: Number(row?.open_bounties ?? 0),
-        total_paid: Number(row?.total_paid ?? 0),
-        active_learners: Number(row?.active_learners ?? 0),
-        companies: Number(row?.companies ?? 0),
-        community_members: Number(row?.community_members ?? 0),
-        lessons_completed: Number(row?.lessons_completed ?? 0),
+        open_bounties: Number(stats?.open_bounties ?? 0),
+        total_paid: Number(stats?.total_paid ?? 0),
+        active_learners: Number(stats?.active_learners ?? 0),
+        companies: Number(stats?.companies ?? 0),
+        community_members: Number(stats?.community_members ?? 0),
+        lessons_completed: Number(stats?.lessons_completed ?? 0),
       };
     },
   });
