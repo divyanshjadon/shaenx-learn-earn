@@ -149,9 +149,128 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Summary Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div className="glass-card p-5 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <BadgeCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-display text-2xl font-bold">{verifiedSkills.length}</p>
+                <p className="text-xs text-muted-foreground">Verified Skills</p>
+              </div>
+            </div>
+            <div className="glass-card p-5 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-display text-2xl font-bold">{applications.length}</p>
+                <p className="text-xs text-muted-foreground">Applications</p>
+              </div>
+            </div>
+            <div className="glass-card p-5 flex items-center gap-4">
+              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-display text-2xl font-bold">{lessonsCompleted}</p>
+                <p className="text-xs text-muted-foreground">Lessons Completed</p>
+              </div>
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
+              {/* Verified Skills */}
+              <div className="glass-card p-6">
+                <h2 className="font-display text-lg font-semibold mb-4">Verified Skills</h2>
+                {verifiedSkills.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No verified skills yet. Complete a track and pass its screening test in the{" "}
+                    <Link to="/learn" className="text-primary hover:underline">Learn Hub</Link>.
+                  </p>
+                ) : (
+                  <div className="flex flex-wrap gap-3">
+                    {verifiedSkills.map((s) => (
+                      <div key={s.id} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 border border-primary/20">
+                        <BadgeCheck className="w-4 h-4 text-primary" />
+                        <div>
+                          <p className="text-sm font-medium">{s.skill_tracks?.title ?? "Skill"}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Verified {new Date(s.verified_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Learning Progress */}
+              <div className="glass-card p-6">
+                <h2 className="font-display text-lg font-semibold mb-4">Learning Progress</h2>
+                {trackProgress.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    You haven't started any tracks yet.{" "}
+                    <Link to="/learn" className="text-primary hover:underline">Start learning</Link>.
+                  </p>
+                ) : (
+                  <div className="space-y-5">
+                    {trackProgress.map(({ track, total, done }) => (
+                      <div key={track.id}>
+                        <div className="flex items-center justify-between mb-2">
+                          <Link to={`/learn/${track.id}`} className="text-sm font-medium hover:text-primary transition-colors">
+                            {track.title}
+                          </Link>
+                          <span className="text-xs text-muted-foreground font-mono">
+                            {done}/{total} lessons
+                          </span>
+                        </div>
+                        <Progress value={total > 0 ? (done / total) * 100 : 0} className="h-2" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* My Applications */}
+              <div className="glass-card p-6">
+                <h2 className="font-display text-lg font-semibold mb-4">My Applications</h2>
+                {applications.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    No applications yet.{" "}
+                    <Link to="/explore" className="text-primary hover:underline">Explore bounties</Link>.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {applications.map((a) => (
+                      <div key={a.id} className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
+                        <div>
+                          <Link to={a.bounties ? `/explore/${a.bounties.id}` : "#"} className="font-medium hover:text-primary transition-colors">
+                            {a.bounties?.title ?? "Bounty"}
+                          </Link>
+                          <p className="text-sm text-muted-foreground">
+                            {a.bounties?.companies?.name ?? "Unknown company"} · Applied {new Date(a.applied_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          {a.bounties && (
+                            <span className="text-sm font-mono text-primary">
+                              {Number(a.bounties.reward_amount).toLocaleString()} {a.bounties.reward_currency}
+                            </span>
+                          )}
+                          <Badge variant={a.status === "accepted" || a.status === "completed" ? "default" : a.status === "rejected" ? "destructive" : "outline"} className="capitalize">
+                            {a.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="glass-card p-4 text-center">
