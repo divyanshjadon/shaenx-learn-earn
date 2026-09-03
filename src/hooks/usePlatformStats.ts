@@ -14,9 +14,12 @@ export function usePlatformStats() {
   return useQuery({
     queryKey: ["platform_stats"],
     queryFn: async (): Promise<PlatformStats> => {
-      const { data, error } = await supabase.rpc("get_platform_stats");
+      const { data: row, error } = await supabase
+        .from("platform_totals" as never)
+        .select("*")
+        .maybeSingle();
       if (error) throw error;
-      const row = (data ?? [])[0] as PlatformStats | undefined;
+      const stats = row as unknown as PlatformStats | null;
       return {
         open_bounties: Number(row?.open_bounties ?? 0),
         total_paid: Number(row?.total_paid ?? 0),
