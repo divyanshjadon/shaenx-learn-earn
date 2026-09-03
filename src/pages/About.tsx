@@ -100,28 +100,6 @@ export default function About() {
             </div>
           </section>
 
-          {/* Team */}
-          <section className="mb-20">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">Meet the Team</h2>
-              <p className="text-muted-foreground">
-                A passionate team building the future of decentralized work.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {team.map((member) => (
-                <div key={member.name} className="glass-card p-6 text-center">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-primary flex items-center justify-center mx-auto mb-4 text-primary-foreground text-xl font-display font-bold">
-                    {member.avatar}
-                  </div>
-                  <h3 className="font-display font-semibold">{member.name}</h3>
-                  <p className="text-sm text-muted-foreground">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           {/* Join Community */}
           <section className="glass-card p-8 md:p-12 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-primary opacity-5" />
