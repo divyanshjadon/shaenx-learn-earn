@@ -22,6 +22,8 @@ export function usePlatformStats() {
         total_paid: Number(row?.total_paid ?? 0),
         active_learners: Number(row?.active_learners ?? 0),
         companies: Number(row?.companies ?? 0),
+        community_members: Number(row?.community_members ?? 0),
+        lessons_completed: Number(row?.lessons_completed ?? 0),
       };
     },
   });
