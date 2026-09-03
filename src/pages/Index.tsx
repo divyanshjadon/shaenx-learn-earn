@@ -37,6 +37,16 @@ const item = {
 
 export default function Index() {
   const navigate = useNavigate();
+  const { data: bounties } = useBounties();
+  const { data: tracks } = useSkillTracks();
+  const { data: platformStats } = usePlatformStats();
+
+  const stats = [
+    { label: "Open Bounties", value: String(platformStats?.open_bounties ?? 0) },
+    { label: "Total Paid", value: `$${(platformStats?.total_paid ?? 0).toLocaleString()}` },
+    { label: "Active Learners", value: String(platformStats?.active_learners ?? 0) },
+    { label: "Companies", value: String(platformStats?.companies ?? 0) },
+  ];
 
   const handleGetStarted = async () => {
     await supabase.auth.signOut();
