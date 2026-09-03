@@ -58,7 +58,7 @@ export function useBounties() {
           .order("is_featured", { ascending: false })
           .order("created_at", { ascending: false })
           .returns<BountyRow[]>(),
-        supabase.rpc("get_bounty_applicant_counts"),
+        supabase.from("bounty_applicant_counts" as never).select("bounty_id, applicant_count"),
       ]);
 
       if (bountiesRes.error) throw bountiesRes.error;

@@ -105,6 +105,29 @@ export type Database = {
           },
         ]
       }
+      bounty_applicant_counts: {
+        Row: {
+          applicant_count: number
+          bounty_id: string
+        }
+        Insert: {
+          applicant_count?: number
+          bounty_id: string
+        }
+        Update: {
+          applicant_count?: number
+          bounty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bounty_applicant_counts_bounty_id_fkey"
+            columns: ["bounty_id"]
+            isOneToOne: true
+            referencedRelation: "bounties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       candidate_skills: {
         Row: {
           id: string
@@ -231,6 +254,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      platform_totals: {
+        Row: {
+          active_learners: number
+          community_members: number
+          companies: number
+          id: boolean
+          lessons_completed: number
+          open_bounties: number
+          total_paid: number
+        }
+        Insert: {
+          active_learners?: number
+          community_members?: number
+          companies?: number
+          id?: boolean
+          lessons_completed?: number
+          open_bounties?: number
+          total_paid?: number
+        }
+        Update: {
+          active_learners?: number
+          community_members?: number
+          companies?: number
+          id?: boolean
+          lessons_completed?: number
+          open_bounties?: number
+          total_paid?: number
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
