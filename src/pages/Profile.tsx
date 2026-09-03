@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
 import { useProfile } from "@/hooks/useProfile";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCandidateSkills, useLessonProgress, useSkillTracks } from "@/hooks/useSkillTracks";
+import { useMyApplications } from "@/hooks/useMyApplications";
 import {
   Calendar,
   Wallet,
@@ -21,18 +25,34 @@ import {
   Twitter,
   Github,
   Linkedin,
+  BadgeCheck,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
   const { profile, isLoading: profileLoading } = useProfile();
   const { stats, activity, badges, isLoading: dataLoading } = useDashboardData();
+  const { data: verifiedSkills = [] } = useCandidateSkills(user?.id);
+  const { data: completedLessons } = useLessonProgress(user?.id);
+  const { data: tracks = [] } = useSkillTracks();
+  const { data: applications = [] } = useMyApplications(user?.id);
   const [editOpen, setEditOpen] = useState(false);
 
   const displayName = profile?.display_name || user?.email?.split("@")[0] || "Builder";
   const username = user?.email ? `@${user.email.split("@")[0]}` : "@builder";
   const initials = displayName.split(" ").map((n) => n[0]).join("").toUpperCase();
   const isLoading = profileLoading || dataLoading;
+
+  const lessonsCompleted = completedLessons?.size ?? 0;
+  const trackProgress = tracks
+    .map((track) => {
+      const total = track.lessons?.length ?? 0;
+      const done = track.lessons?.filter((l) => completedLessons?.has(l.id)).length ?? 0;
+      return { track, total, done };
+    })
+    .filter((t) => t.done > 0);
 
   return (
     <div className="min-h-screen bg-gradient-hero">
