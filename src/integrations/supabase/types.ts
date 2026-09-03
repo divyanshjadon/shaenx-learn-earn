@@ -474,7 +474,9 @@ export type Database = {
         Args: never
         Returns: {
           active_learners: number
+          community_members: number
           companies: number
+          lessons_completed: number
           open_bounties: number
           total_paid: number
         }[]

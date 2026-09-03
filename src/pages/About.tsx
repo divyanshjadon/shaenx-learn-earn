@@ -13,6 +13,7 @@ import {
   MessageCircle,
   Mail,
 } from "lucide-react";
+import { usePlatformStats } from "@/hooks/usePlatformStats";
 
 const team = [
   { name: "Sarah Chen", role: "Founder & CEO", avatar: "SC" },
@@ -44,14 +45,16 @@ const values = [
   },
 ];
 
-const communityStats = [
-  { value: "25K+", label: "Community Members" },
-  { value: "150+", label: "Partner Companies" },
-  { value: "$2.5M+", label: "Paid to Contributors" },
-  { value: "50+", label: "Countries Represented" },
-];
-
 export default function About() {
+  const { data: stats } = usePlatformStats();
+
+  const communityStats = [
+    { value: String(stats?.community_members ?? 0), label: "Community Members" },
+    { value: String(stats?.companies ?? 0), label: "Partner Companies" },
+    { value: `$${(stats?.total_paid ?? 0).toLocaleString()}`, label: "Paid to Contributors" },
+    { value: String(stats?.lessons_completed ?? 0), label: "Lessons Completed" },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-hero">
       <Header />
