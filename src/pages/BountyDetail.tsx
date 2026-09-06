@@ -49,7 +49,19 @@ export default function BountyDetail() {
       .insert({ bounty_id: bounty.id, user_id: user.id });
     setApplying(false);
     if (error) {
-      toast({ title: "Could not apply", description: "Please try again.", variant: "destructive" });
+      const msg = error.message?.toLowerCase() ?? "";
+      toast({
+        title: msg.includes("duplicate")
+          ? "You already applied to this bounty"
+          : msg.includes("row-level security") || error.code === "42501"
+            ? "Verify a matching skill first"
+            : "Could not apply",
+        description: msg.includes("duplicate")
+          ? "Check your profile for the status."
+          : "Pass the screening test for one of the required skills, then try again.",
+        variant: "destructive",
+      });
+      queryClient.invalidateQueries({ queryKey: ["application", id, user.id] });
       return;
     }
     toast({ title: "Application submitted!" });
