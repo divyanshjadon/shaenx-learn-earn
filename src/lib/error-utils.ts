@@ -1,5 +1,8 @@
 
-export const getAuthErrorMessage = (error: any) => {
+export const getAuthErrorMessage = (error: unknown) => {
+  if (!error) return null;
+
+  const message = (error as { message?: string })?.message || String(error);
   if (!error) return null;
   
   const message = error.message || String(error);
