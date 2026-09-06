@@ -534,6 +534,10 @@ export type Database = {
           total_paid: number
         }[]
       }
+      is_eligible_for_bounty: {
+        Args: { _bounty_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
