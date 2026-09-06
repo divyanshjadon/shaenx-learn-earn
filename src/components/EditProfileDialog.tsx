@@ -77,7 +77,7 @@ export function EditProfileDialog({ open, onOpenChange }: EditProfileDialogProps
     setErrors({});
 
     try {
-      await updateProfile.mutateAsync(values as any);
+      await updateProfile.mutateAsync(values);
       toast({ title: "Profile updated", description: "Your changes have been saved." });
       onOpenChange(false);
     } catch {

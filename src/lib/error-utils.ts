@@ -3,9 +3,8 @@ export const getAuthErrorMessage = (error: unknown) => {
   if (!error) return null;
 
   const message = (error as { message?: string })?.message || String(error);
-  if (!error) return null;
-  
-  const message = error.message || String(error);
+
+
   
   // Map specific errors to safe messages
   if (message.includes('Invalid login credentials')) {
