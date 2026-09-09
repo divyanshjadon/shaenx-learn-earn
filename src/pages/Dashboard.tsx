@@ -29,7 +29,14 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { stats, activity, badges, isLoading } = useDashboardData();
+  const { badges } = useDashboardData();
+  const {
+    stats,
+    activity,
+    trackProgress,
+    activeApplications,
+    isLoading,
+  } = useUserProgress();
   const displayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "there";
 
   return (
