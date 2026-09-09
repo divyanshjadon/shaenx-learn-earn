@@ -243,14 +243,14 @@ export default function Dashboard() {
                       >
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                           item.type === "bounty_completed" ? "bg-success/10 text-success"
-                          : item.type === "badge_earned" ? "bg-warning/10 text-warning"
+                          : item.type === "skill_verified" ? "bg-warning/10 text-warning"
                           : "bg-primary/10 text-primary"
                         }`}>
                           {item.type === "bounty_completed" && <CheckCircle className="w-4 h-4" />}
-                          {item.type === "learning_completed" && <Award className="w-4 h-4" />}
-                          {item.type === "badge_earned" && <Trophy className="w-4 h-4" />}
-                          {item.type === "bounty_started" && <Clock className="w-4 h-4" />}
+                          {item.type === "skill_verified" && <Award className="w-4 h-4" />}
+                          {item.type === "bounty_applied" && <Clock className="w-4 h-4" />}
                         </div>
+
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{item.title}</p>
                           <p className="text-xs text-muted-foreground font-mono">
