@@ -33,11 +33,16 @@ import {
 export default function Profile() {
   const { user } = useAuth();
   const { profile, isLoading: profileLoading } = useProfile();
-  const { stats, activity, badges, isLoading: dataLoading } = useDashboardData();
-  const { data: verifiedSkills = [] } = useCandidateSkills(user?.id);
-  const { data: completedLessons } = useLessonProgress(user?.id);
-  const { data: tracks = [] } = useSkillTracks();
-  const { data: applications = [] } = useMyApplications(user?.id);
+  const { badges } = useDashboardData();
+  const {
+    verifiedSkills,
+    applications,
+    completedApplications,
+    trackProgress,
+    activity,
+    stats,
+    isLoading: dataLoading,
+  } = useUserProgress();
   const [editOpen, setEditOpen] = useState(false);
 
   const displayName = profile?.display_name || user?.email?.split("@")[0] || "Builder";
@@ -45,14 +50,8 @@ export default function Profile() {
   const initials = displayName.split(" ").map((n) => n[0]).join("").toUpperCase();
   const isLoading = profileLoading || dataLoading;
 
-  const lessonsCompleted = completedLessons?.size ?? 0;
-  const trackProgress = tracks
-    .map((track) => {
-      const total = track.lessons?.length ?? 0;
-      const done = track.lessons?.filter((l) => completedLessons?.has(l.id)).length ?? 0;
-      return { track, total, done };
-    })
-    .filter((t) => t.done > 0);
+  const lessonsCompleted = stats.lessons_completed;
+
 
   return (
     <div className="min-h-screen bg-gradient-hero">
