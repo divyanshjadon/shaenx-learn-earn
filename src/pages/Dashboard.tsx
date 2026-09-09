@@ -272,17 +272,18 @@ export default function Dashboard() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground font-mono">Verified Skills</span>
-                    <span className="font-medium">{stats.skills_verified}</span>
+                    <span className="font-medium">{stats.verified_skills}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground font-mono">Learning Hours</span>
-                    <span className="font-medium">{stats.learning_hours}h</span>
+                    <span className="text-sm text-muted-foreground font-mono">Lessons Completed</span>
+                    <span className="font-medium">{stats.lessons_completed}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground font-mono">Global Rank</span>
-                    <span className="font-medium">{stats.rank > 0 ? `#${stats.rank}` : "—"}</span>
+                    <span className="text-sm text-muted-foreground font-mono">Applications</span>
+                    <span className="font-medium">{stats.applications}</span>
                   </div>
                 </div>
+
               </div>
             </motion.div>
           </div>
