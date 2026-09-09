@@ -275,46 +275,49 @@ export default function Profile() {
                 <div className="glass-card p-4 text-center">
                   <Trophy className="w-6 h-6 text-primary mx-auto mb-2" />
                   <p className="font-display text-xl font-bold">{stats.completed_bounties}</p>
-                  <p className="text-xs text-muted-foreground">Bounties</p>
+                  <p className="text-xs text-muted-foreground">Completed</p>
                 </div>
                 <div className="glass-card p-4 text-center">
                   <Star className="w-6 h-6 text-warning mx-auto mb-2" />
-                  <p className="font-display text-xl font-bold">{stats.reputation}</p>
-                  <p className="text-xs text-muted-foreground">Rating</p>
+                  <p className="font-display text-xl font-bold">{stats.active_bounties}</p>
+                  <p className="text-xs text-muted-foreground">Active</p>
                 </div>
                 <div className="glass-card p-4 text-center">
                   <Target className="w-6 h-6 text-success mx-auto mb-2" />
-                  <p className="font-display text-xl font-bold">${stats.total_earnings}</p>
+                  <p className="font-display text-xl font-bold">${stats.total_earnings.toLocaleString()}</p>
                   <p className="text-xs text-muted-foreground">Earned</p>
                 </div>
                 <div className="glass-card p-4 text-center">
                   <Clock className="w-6 h-6 text-secondary mx-auto mb-2" />
-                  <p className="font-display text-xl font-bold">{stats.learning_hours}h</p>
-                  <p className="text-xs text-muted-foreground">Learning</p>
+                  <p className="font-display text-xl font-bold">{stats.lessons_completed}</p>
+                  <p className="text-xs text-muted-foreground">Lessons</p>
                 </div>
               </div>
 
               {/* Completed Bounties */}
               <div className="glass-card p-6">
                 <h2 className="font-display text-lg font-semibold mb-4">Completed Bounties</h2>
-                {activity.filter((a) => a.type === "bounty_completed").length === 0 ? (
+                {completedApplications.length === 0 ? (
                   <p className="text-sm text-muted-foreground">No completed bounties yet. Start exploring!</p>
                 ) : (
                   <div className="space-y-4">
-                    {activity
-                      .filter((a) => a.type === "bounty_completed")
-                      .map((a) => (
-                        <div key={a.id} className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
-                          <div>
-                            <p className="font-medium">{a.title}</p>
-                            <p className="text-sm text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</p>
-                          </div>
-                          {a.reward && <Badge variant="outline">{a.reward}</Badge>}
+                    {completedApplications.map((a) => (
+                      <div key={a.id} className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
+                        <div>
+                          <p className="font-medium">{a.bounties?.title ?? "Bounty"}</p>
+                          <p className="text-sm text-muted-foreground">{new Date(a.applied_at).toLocaleDateString()}</p>
                         </div>
-                      ))}
+                        {a.bounties && (
+                          <Badge variant="outline">
+                            {Number(a.bounties.reward_amount).toLocaleString()} {a.bounties.reward_currency}
+                          </Badge>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
+
             </div>
 
             {/* Sidebar */}
