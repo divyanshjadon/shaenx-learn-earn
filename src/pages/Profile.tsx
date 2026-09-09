@@ -10,9 +10,9 @@ import { Progress } from "@/components/ui/progress";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
 import { useProfile } from "@/hooks/useProfile";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useUserProgress } from "@/hooks/useUserProgress";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCandidateSkills, useLessonProgress, useSkillTracks } from "@/hooks/useSkillTracks";
-import { useMyApplications } from "@/hooks/useMyApplications";
+
 import {
   Calendar,
   Wallet,
