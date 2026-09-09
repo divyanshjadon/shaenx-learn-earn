@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useUserProgress } from "@/hooks/useUserProgress";
+import { Progress } from "@/components/ui/progress";
 import { formatDistanceToNow } from "date-fns";
 
 const containerVariants = {
@@ -27,7 +29,14 @@ const itemVariants = {
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { stats, activity, badges, isLoading } = useDashboardData();
+  const { badges } = useDashboardData();
+  const {
+    stats,
+    activity,
+    trackProgress,
+    activeApplications,
+    isLoading,
+  } = useUserProgress();
   const displayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "there";
 
   return (
@@ -86,7 +95,7 @@ export default function Dashboard() {
             </motion.div>
             <motion.div variants={itemVariants}>
               {isLoading ? <Skeleton className="h-32" /> : (
-                <StatsCard label="Reputation" value={`${stats.reputation}/5.0`} icon={<Star className="w-6 h-6" />} change={stats.rank > 0 ? `Rank #${stats.rank}` : "Unranked"} changeType="neutral" />
+                <StatsCard label="Verified Skills" value={stats.verified_skills} icon={<Star className="w-6 h-6" />} change={`${stats.lessons_completed} lessons done`} changeType="neutral" />
               )}
             </motion.div>
           </motion.div>
@@ -109,7 +118,7 @@ export default function Dashboard() {
                     <Button variant="ghost" size="sm" className="gap-1">Browse Bounties<ArrowRight className="w-4 h-4" /></Button>
                   </Link>
                 </div>
-                {stats.active_bounties === 0 ? (
+                {activeApplications.length === 0 ? (
                   <div className="neon-card p-8 text-center">
                     <Briefcase className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
                     <p className="text-muted-foreground mb-4">You haven't started any bounties yet.</p>
@@ -120,8 +129,27 @@ export default function Dashboard() {
                     </Link>
                   </div>
                 ) : (
-                  <div className="neon-card p-6">
-                    <p className="text-muted-foreground">You have <span className="font-bold text-foreground">{stats.active_bounties}</span> active bounties. Keep building!</p>
+                  <div className="space-y-3">
+                    {activeApplications.map((a) => (
+                      <div key={a.id} className="neon-card p-5 flex items-center justify-between gap-4">
+                        <div className="min-w-0">
+                          <Link to={a.bounties ? `/explore/${a.bounties.id}` : "#"} className="font-medium hover:text-primary transition-colors">
+                            {a.bounties?.title ?? "Bounty"}
+                          </Link>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {a.bounties?.companies?.name ?? "Unknown company"} · Applied {new Date(a.applied_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                          {a.bounties && (
+                            <span className="text-sm font-mono text-primary">
+                              {Number(a.bounties.reward_amount).toLocaleString()} {a.bounties.reward_currency}
+                            </span>
+                          )}
+                          <Badge variant="outline" className="capitalize">{a.status}</Badge>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </motion.section>
@@ -141,7 +169,7 @@ export default function Dashboard() {
                     <Button variant="ghost" size="sm" className="gap-1">Browse Tracks<ArrowRight className="w-4 h-4" /></Button>
                   </Link>
                 </div>
-                {stats.learning_hours === 0 ? (
+                {trackProgress.length === 0 ? (
                   <div className="neon-card p-8 text-center">
                     <Award className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
                     <p className="text-muted-foreground mb-4">Start a learning track to build your skills.</p>
@@ -152,12 +180,23 @@ export default function Dashboard() {
                     </Link>
                   </div>
                 ) : (
-                  <div className="neon-card p-6">
-                    <p className="text-muted-foreground">You've logged <span className="font-bold text-foreground">{stats.learning_hours}h</span> of learning. Keep it up!</p>
+                  <div className="neon-card p-6 space-y-5">
+                    {trackProgress.map(({ track, total, done }) => (
+                      <div key={track.id}>
+                        <div className="flex items-center justify-between mb-2">
+                          <Link to={`/learn/${track.id}`} className="text-sm font-medium hover:text-primary transition-colors">
+                            {track.title}
+                          </Link>
+                          <span className="text-xs text-muted-foreground font-mono">{done}/{total} lessons</span>
+                        </div>
+                        <Progress value={total > 0 ? (done / total) * 100 : 0} className="h-2" />
+                      </div>
+                    ))}
                   </div>
                 )}
               </motion.section>
             </div>
+
 
             {/* Sidebar */}
             <motion.div
@@ -204,14 +243,14 @@ export default function Dashboard() {
                       >
                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                           item.type === "bounty_completed" ? "bg-success/10 text-success"
-                          : item.type === "badge_earned" ? "bg-warning/10 text-warning"
+                          : item.type === "skill_verified" ? "bg-warning/10 text-warning"
                           : "bg-primary/10 text-primary"
                         }`}>
                           {item.type === "bounty_completed" && <CheckCircle className="w-4 h-4" />}
-                          {item.type === "learning_completed" && <Award className="w-4 h-4" />}
-                          {item.type === "badge_earned" && <Trophy className="w-4 h-4" />}
-                          {item.type === "bounty_started" && <Clock className="w-4 h-4" />}
+                          {item.type === "skill_verified" && <Award className="w-4 h-4" />}
+                          {item.type === "bounty_applied" && <Clock className="w-4 h-4" />}
                         </div>
+
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{item.title}</p>
                           <p className="text-xs text-muted-foreground font-mono">
@@ -233,17 +272,18 @@ export default function Dashboard() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground font-mono">Verified Skills</span>
-                    <span className="font-medium">{stats.skills_verified}</span>
+                    <span className="font-medium">{stats.verified_skills}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground font-mono">Learning Hours</span>
-                    <span className="font-medium">{stats.learning_hours}h</span>
+                    <span className="text-sm text-muted-foreground font-mono">Lessons Completed</span>
+                    <span className="font-medium">{stats.lessons_completed}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground font-mono">Global Rank</span>
-                    <span className="font-medium">{stats.rank > 0 ? `#${stats.rank}` : "—"}</span>
+                    <span className="text-sm text-muted-foreground font-mono">Applications</span>
+                    <span className="font-medium">{stats.applications}</span>
                   </div>
                 </div>
+
               </div>
             </motion.div>
           </div>
