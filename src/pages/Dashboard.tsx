@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useUserProgress } from "@/hooks/useUserProgress";
+import { Progress } from "@/components/ui/progress";
 import { formatDistanceToNow } from "date-fns";
 
 const containerVariants = {
