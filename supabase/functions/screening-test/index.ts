@@ -59,6 +59,35 @@ Deno.serve(async (req) => {
       });
     }
 
+    const { data: lessons, error: lessonsError } = await admin
+      .from("lessons")
+      .select("id")
+      .eq("skill_track_id", test.skill_track_id);
+
+    if (lessonsError) throw lessonsError;
+    if (!lessons?.length) {
+      return new Response(JSON.stringify({ error: "Complete the track lessons before taking the screening test" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const lessonIds = lessons.map((lesson) => lesson.id);
+    const { data: completedLessons, error: progressError } = await admin
+      .from("lesson_progress")
+      .select("lesson_id")
+      .eq("user_id", user.id)
+      .in("lesson_id", lessonIds);
+
+    if (progressError) throw progressError;
+    const completedLessonIds = new Set((completedLessons ?? []).map((lesson) => lesson.lesson_id));
+    if (lessonIds.some((lessonId) => !completedLessonIds.has(lessonId))) {
+      return new Response(JSON.stringify({ error: "Complete all track lessons before taking the screening test" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const questions = (test.questions ?? []) as Question[];
 
     if (action === "get") {
