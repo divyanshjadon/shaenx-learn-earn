@@ -40,7 +40,7 @@ export default function Auth() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -51,6 +51,15 @@ export default function Auth() {
     setLoading(false);
     if (error) {
       toast({ title: "Signup failed", description: getAuthErrorMessage(error), variant: "destructive" });
+    } else if (data?.user && data.user.identities?.length === 0) {
+      // Supabase returns a success-looking response with empty identities when
+      // the email is already registered (to prevent account enumeration).
+      toast({
+        title: "Account already exists",
+        description: "An account with this email already exists. Try signing in instead.",
+        variant: "destructive",
+      });
+      setMode("login");
     } else {
       toast({ title: "Check your email", description: "We sent you a confirmation link to verify your account." });
     }
