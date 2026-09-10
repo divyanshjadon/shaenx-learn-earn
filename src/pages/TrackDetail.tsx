@@ -10,7 +10,7 @@ import { useSkillTrack, useLessonProgress, useCandidateSkills } from "@/hooks/us
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeft, CheckCircle, Circle, Award, Loader2 } from "lucide-react";
+import { ArrowLeft, CheckCircle, Circle, Award, Loader2, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TestQuestion {
@@ -37,17 +37,8 @@ export default function TrackDetail() {
   const allDone = lessons.length > 0 && doneCount === lessons.length;
   const verified = !!skills?.some((s) => s.skill_track_id === track?.id);
 
-  const markComplete = async (lessonId: string) => {
-    if (!user) return;
-    const { error } = await supabase
-      .from("lesson_progress")
-      .insert({ user_id: user.id, lesson_id: lessonId });
-    if (error && !error.message.includes("duplicate")) {
-      toast({ title: "Could not save progress", variant: "destructive" });
-      return;
-    }
-    queryClient.invalidateQueries({ queryKey: ["lesson_progress", user.id] });
-  };
+
+
 
   const startTest = async () => {
     setLoadingTest(true);
