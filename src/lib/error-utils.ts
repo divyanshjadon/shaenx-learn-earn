@@ -1,26 +1,62 @@
-
 export const getAuthErrorMessage = (error: unknown) => {
   if (!error) return null;
 
-  const message = (error as { message?: string })?.message || String(error);
+  const err = error as { message?: string; code?: string; status?: number };
+  const message = err?.message || String(error);
+  const code = err?.code || "";
+  const status = err?.status;
+  const lower = message.toLowerCase();
 
+  // Already registered
+  if (
+    code === "user_already_exists" ||
+    code === "email_exists" ||
+    lower.includes("already registered") ||
+    lower.includes("already been registered") ||
+    lower.includes("user already exists") ||
+    lower.includes("email address is already")
+  ) {
+    return "An account with this email already exists. Try signing in instead.";
+  }
 
-  
-  // Map specific errors to safe messages
-  if (message.includes('Invalid login credentials')) {
-    return 'Invalid email or password';
+  // Rate limiting
+  if (status === 429 || code.includes("rate_limit") || lower.includes("rate limit") || lower.includes("too many requests")) {
+    if (lower.includes("email")) {
+      return "Too many emails sent. Please wait a few minutes and try again.";
+    }
+    return "Too many attempts. Please wait a moment and try again.";
   }
-  if (message.includes('Email not confirmed')) {
-    return 'Please verify your email before signing in';
+
+  // Password policy
+  if (
+    code === "weak_password" ||
+    lower.includes("password should be") ||
+    lower.includes("password is too short") ||
+    lower.includes("password should contain")
+  ) {
+    return `Password doesn't meet requirements: ${message.replace(/^AuthApiError:\s*/i, "")}`;
   }
-  if (message.includes('User already registered')) {
-    return 'This email is already registered';
+  if (lower.includes("pwned") || lower.includes("leaked") || lower.includes("data breach")) {
+    return "This password has appeared in a data breach. Please choose a different one.";
   }
-  if (message.includes('Password should be')) {
-    return 'Password is too weak. Please use a stronger password.';
+
+  // Sign-in specific
+  if (lower.includes("invalid login credentials")) {
+    return "Invalid email or password";
   }
-  
-  // Generic fallback for other errors to prevent leaking internal details
-  console.error('Auth error:', error); // Keep log for debugging but hide from user
-  return 'Authentication failed. Please try again.';
+  if (lower.includes("email not confirmed")) {
+    return "Please verify your email before signing in";
+  }
+  if (lower.includes("invalid email") || lower.includes("unable to validate email")) {
+    return "Please enter a valid email address.";
+  }
+  if (lower.includes("signups not allowed") || lower.includes("signup is disabled")) {
+    return "New sign-ups are currently disabled.";
+  }
+  if (lower.includes("failed to fetch") || lower.includes("network")) {
+    return "Network error. Please check your connection and try again.";
+  }
+
+  console.error("Auth error:", error);
+  return "Authentication failed. Please try again.";
 };
