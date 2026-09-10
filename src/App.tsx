@@ -13,6 +13,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Explore = lazy(() => import("./pages/Explore"));
 const LearnHub = lazy(() => import("./pages/LearnHub"));
 const TrackDetail = lazy(() => import("./pages/TrackDetail"));
+const LessonDetail = lazy(() => import("./pages/LessonDetail"));
 const BountyDetail = lazy(() => import("./pages/BountyDetail"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/explore" element={<Explore />} />
               <Route path="/learn" element={<LearnHub />} />
               <Route path="/learn/:id" element={<TrackDetail />} />
+              <Route path="/learn/:trackId/lesson/:lessonId" element={<LessonDetail />} />
               <Route path="/explore/:id" element={<BountyDetail />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
