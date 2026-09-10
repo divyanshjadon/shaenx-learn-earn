@@ -109,27 +109,30 @@ export default function TrackDetail() {
                   <span className="text-sm font-mono text-muted-foreground">{doneCount}/{lessons.length} complete</span>
                 </div>
                 <div className="space-y-3">
-                  {lessons.map((lesson) => {
+                  {lessons.map((lesson, i) => {
                     const done = completed?.has(lesson.id);
                     return (
-                      <div key={lesson.id} className="flex items-start gap-3 p-4 rounded-xl border border-border/50">
+                      <Link
+                        key={lesson.id}
+                        to={`/learn/${track.id}/lesson/${lesson.id}`}
+                        className="flex items-start gap-3 p-4 rounded-xl border border-border/50 hover:border-primary/50 transition-colors group"
+                      >
                         {done ? (
                           <CheckCircle className="w-5 h-5 text-success mt-0.5 shrink-0" />
                         ) : (
                           <Circle className="w-5 h-5 text-muted-foreground mt-0.5 shrink-0" />
                         )}
-                        <div className="flex-1">
-                          <p className="font-medium">{lesson.title}</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium group-hover:text-primary transition-colors">
+                            <span className="font-mono text-muted-foreground mr-2">{String(i + 1).padStart(2, "0")}</span>
+                            {lesson.title}
+                          </p>
                           {lesson.content && (
-                            <p className="text-sm text-muted-foreground mt-1 whitespace-pre-line">{lesson.content}</p>
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{lesson.content}</p>
                           )}
                         </div>
-                        {user && !done && (
-                          <Button size="sm" variant="outline" onClick={() => markComplete(lesson.id)}>
-                            Mark done
-                          </Button>
-                        )}
-                      </div>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary shrink-0 mt-0.5" />
+                      </Link>
                     );
                   })}
                 </div>
